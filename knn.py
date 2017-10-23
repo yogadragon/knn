@@ -98,6 +98,7 @@ def handwritting(k,port):
 		trainmat[i1,:] = vector
 	testlist = listdir('testDigits')
 	n = len(testlist)
+	print(n)
 	error = 0
 	for i in range(n):
 		name0 = testlist[i]
@@ -106,11 +107,19 @@ def handwritting(k,port):
 		labeltest = int(name2)
 		name3 = str('testDigits/'+name0)
 		vector = imagetovector(name3)
-		result = classfy(vector,trainmat,labellist,3)
+		result = classfy(vector,trainmat,labellist,k)
 		if result != labeltest:
 			error +=1
 	errorrate = error/float(n)
-	print(errorrate)
+	return errorrate
 
+ffr = open('knn_port.plt','w')
+ffr.write('variables = port,error'+'\n')
+k = 3
+err = 0.01
 
-handwritting(3,0.1)
+port = 0.05
+while port <= 1.0:
+	err = handwritting(3,port)
+	ffr.write(str(float(port))+','+str(float(err))+'\n')
+	port += 0.05
